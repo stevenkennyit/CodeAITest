@@ -1,0 +1,9 @@
+[package]
+name = "codeaitest"
+version = "0.1.0"
+edition = "2021"
+
+[target.'cfg(windows)'.dependencies]
+anyhow = "1"
+windows = { version = "0.52", features = ["Win32_Foundation", "Win32_System_Memory"] }
+

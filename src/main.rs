@@ -4,15 +4,21 @@
 //! - Flips to RX (PAGE_EXECUTE_READ), then back to RW
 //! - Never executes from that region
 
-use anyhow::{bail, Context, Result};
+#[cfg(windows)]
+use anyhow::{bail, Result};
+#[cfg(windows)]
 use core::ffi::c_void;
+#[cfg(windows)]
 use std::{ptr, slice};
+#[cfg(windows)]
 use windows::Win32::Foundation::BOOL;
+#[cfg(windows)]
 use windows::Win32::System::Memory::{
     VirtualAlloc, VirtualFree, VirtualProtect, MEM_COMMIT, MEM_RELEASE, MEM_RESERVE,
-    PAGE_PROTECTION_FLAGS, PAGE_EXECUTE_READ, PAGE_READWRITE,
+    PAGE_EXECUTE_READ, PAGE_PROTECTION_FLAGS, PAGE_READWRITE,
 };
 
+#[cfg(windows)]
 fn main() -> Result<()> {
     unsafe {
         // 1) Reserve+commit 4 KiB, RW
@@ -72,4 +78,9 @@ fn main() -> Result<()> {
     }
 
     Ok(())
+}
+
+#[cfg(not(windows))]
+fn main() {
+    println!("This example is intended to run on Windows.");
 }
